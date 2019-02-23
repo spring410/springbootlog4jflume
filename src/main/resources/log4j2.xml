@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <Properties>
+        <!-- 配置日志文件输出目录 -->
+        <Property name="file_path">logs</Property>
+        <Property name="app">findlogs</Property>
+        <Property name="log_pattern">%d [${app}] [%class{1.}.%method:%line] [%level] - %m%n</Property>
+    </Properties>
+    <Appenders>
+
+        <Console target="SYSTEM_OUT" name="Console">
+            <PatternLayout charset="UTF-8" pattern="${log_pattern}"/>
+        </Console>
+
+        <RollingFile name="RollingFile" fileName="${file_path}/${app}/rolling/${app}.log"
+                     filePattern="${file_path}/${app}/rolling/${app}-%d{yyyyMMdd}-%i.log"
+                     ignoreExceptions="false">
+            <PatternLayout charset="UTF-8" pattern="${log_pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="90"/>
+        </RollingFile>
+
+        <RollingFile name="InfoFile" fileName="${file_path}/${app}/info/${app}.log"
+                     filePattern="${file_path}/${app}/info/${app}-%d{yyyyMMdd}-%i.log"
+                     ignoreExceptions="false">
+            <ThresholdFilter level="info" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout charset="UTF-8" pattern="${log_pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="90"/>
+        </RollingFile>
+
+        <RollingFile name="ErrorFile" fileName="${file_path}/${app}/error/${app}.log"
+                     filePattern="${file_path}/${app}/error/${app}-%d{yyyyMMdd}-%i.log"
+                     ignoreExceptions="false">
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <PatternLayout charset="UTF-8" pattern="${log_pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="90"/>
+        </RollingFile>
+
+        <RollingFile name="RequestLogFile" fileName="${file_path}/${app}/request-log/${app}.log"
+                     filePattern="${file_path}/${app}/request-log/${app}-%d{yyyyMMdd}-%i.log"
+                     ignoreExceptions="false">
+            <PatternLayout charset="UTF-8" pattern="${log_pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+            </Policies>
+            <DefaultRolloverStrategy max="90"/>
+        </RollingFile>
+
+    </Appenders>
+
+    <Loggers>
+
+        <root level="INFO">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="RollingFile"/>
+            <appender-ref ref="InfoFile"/>
+            <appender-ref ref="ErrorFile"/>
+        </root>
+    </Loggers>
+
+</configuration>
